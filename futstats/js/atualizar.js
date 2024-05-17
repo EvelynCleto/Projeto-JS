@@ -1,56 +1,23 @@
-function somarGol(id){
-    // Pegar os jogadores do localStorage
-    let jogadores = JSON.parse(localStorage.getItem("jogadores")) || [];
-
-    // Encontrar o jogador com o id passado como parâmetro
-    let jogador = jogadores.find(jogador => jogador.id == id);
-
-    // Somar 1 gol ao jogador
-    jogador.gols++;
-
-    // Salvar a lista de jogadores no localStorage
-    localStorage.setItem("jogadores", JSON.stringify(jogadores));
-
-    // Atualizar o elemento na interface do usuário
-    const jogadorElement = document.querySelector(`#jogador-${id}`);
-    jogadorElement.querySelector('.gols').textContent = jogador.gols;
-
-}
-
-function subtrairGol(id){
-    // Pegar os jogadores do localStorage
-    let jogadores = JSON.parse(localStorage.getItem("jogadores")) || [];
-
-    // Encontrar o jogador com o id passado como parâmetro
-    let jogador = jogadores.find(jogador => jogador.id == id);
-
-    // Subtrair 1 gol ao jogador
-    jogador.gols--;
-
-    // Salvar a lista de jogadores no localStorage
-    localStorage.setItem("jogadores", JSON.stringify(jogadores));
-
-    // Atualizar o elemento na interface do usuário
-    const jogadorElement = document.querySelector(`#jogador-${id}`);
-    jogadorElement.querySelector('.gols').textContent = jogador.gols;
-}
-
 function somarAssistencia(id){
     // Pegar os jogadores do localStorage
     let jogadores = JSON.parse(localStorage.getItem("jogadores")) || [];
 
     // Encontrar o jogador com o id passado como parâmetro
-    let jogador = jogadores.find(jogador => jogador.id == id);
+    const jogador = jogadores.find(jogador => jogador.id == id);
 
-    // Somar 1 assistência ao jogador
-    jogador.assistencias++;
+    if (jogador) {
+        // Somar 1 assistência ao jogador
+        jogador.assistencias++;
 
-    // Salvar a lista de jogadores no localStorage
-    localStorage.setItem("jogadores", JSON.stringify(jogadores));
+        // Atualizar o elemento na interface do usuário que exibe as assistências
+        const assistenciasElement = document.getElementById(`assistencias-${id}`);
+        if (assistenciasElement) {
+            assistenciasElement.textContent = jogador.assistencias;
+        }
 
-    // Atualizar o elemento na interface do usuário
-    const jogadorElement = document.querySelector(`#jogador-${id}`);
-    jogadorElement.querySelector('.assistencias').textContent = jogador.assistencias;
+        // Salvar a lista de jogadores no localStorage
+        localStorage.setItem("jogadores", JSON.stringify(jogadores));
+    }
 }
 
 function subtrairAssistencia(id){
@@ -58,15 +25,24 @@ function subtrairAssistencia(id){
     let jogadores = JSON.parse(localStorage.getItem("jogadores")) || [];
 
     // Encontrar o jogador com o id passado como parâmetro
-    let jogador = jogadores.find(jogador => jogador.id == id);
+    const jogador = jogadores.find(jogador => jogador.id == id);
 
-    // Subtrair 1 assistência ao jogador
-    jogador.assistencias--;
+    if (jogador) {
+        // Subtrair 1 assistência ao jogador
+        jogador.assistencias--;
 
-    // Salvar a lista de jogadores no localStorage
-    localStorage.setItem("jogadores", JSON.stringify(jogadores));
+        // Garantir que as assistências não fiquem negativas
+        if (jogador.assistencias < 0) {
+            jogador.assistencias = 0;
+        }
 
-    // Atualizar o elemento na interface do usuário
-    const jogadorElement = document.querySelector(`#jogador-${id}`);
-    jogadorElement.querySelector('.assistencias').textContent = jogador.assistencias;
+        // Atualizar o elemento na interface do usuário que exibe as assistências
+        const assistenciasElement = document.getElementById(`assistencias-${id}`);
+        if (assistenciasElement) {
+            assistenciasElement.textContent = jogador.assistencias;
+        }
+
+        // Salvar a lista de jogadores no localStorage
+        localStorage.setItem("jogadores", JSON.stringify(jogadores));
+    }
 }
